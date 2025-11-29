@@ -98,8 +98,8 @@ $medicamentos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </td>
                             <td>$<?php echo number_format($med['precio'], 2); ?></td>
                             <td class="text-end pe-3">
-                                <a href="editar.php?id=<?php echo $med['id']; ?>" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i></a>
-                                <a href="../logica/eliminar.php?id=<?php echo $med['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Borrar?');"><i class="bi bi-trash"></i></a>
+                                <a href="editar.php?id=<?php echo $med['id']; ?>" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i>Editar</a>
+                                <a href="../logica/eliminar.php?id=<?php echo $med['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Borrar?');"><i class="bi bi-trash">Eliminar</i></a>
                             </td>
                         </tr>
                         <?php endforeach; ?>
