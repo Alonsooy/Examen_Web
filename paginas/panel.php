@@ -39,7 +39,7 @@ $medicamentos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4 shadow-sm">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="#">🏥 Salud Total</a>
+            <a class="navbar-brand fw-bold" href="#">Salud Total</a>
             <div class="d-flex align-items-center text-white">
                 <small class="me-3 d-none d-md-block">
                     <?php echo htmlspecialchars($_SESSION['user_nombre']); ?>
