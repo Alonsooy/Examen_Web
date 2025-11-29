@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_rol'] != 'admin') {
 
 if (isset($_GET['id'])) {
     if ($_GET['id'] == $_SESSION['user_id']) {
-        die("No puedes eliminar tu propia cuenta mientras estás logueado.");
+        die("No puedes eliminar tu propia cuenta.");
     }
 
     $stmt = $conn->prepare("DELETE FROM usuarios WHERE id = ?");

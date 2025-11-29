@@ -60,10 +60,10 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <?php endif; ?>
                                 </td>
                                 <td class="text-end">
-                                    <a href="editar_usuario.php?id=<?php echo $usu['id']; ?>" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i></a>
+                                    <a href="editar_usuario.php?id=<?php echo $usu['id']; ?>" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i>Editar</a>
                                     
                                     <?php if($usu['id'] != $_SESSION['user_id']): ?>
-                                        <a href="../logica/eliminar_usuario.php?id=<?php echo $usu['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar usuario?');"><i class="bi bi-trash"></i></a>
+                                        <a href="../logica/eliminar_usuario.php?id=<?php echo $usu['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar usuario?');"><i class="bi bi-trash"></i>Eliminar</a>
                                     <?php endif; ?>
                                 </td>
                             </tr>
