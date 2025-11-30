@@ -37,9 +37,11 @@ $medicamentos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body class="bg-light">
 
+
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4 shadow-sm">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="#">Salud Total</a>
+            <a class="navbar-brand fw-bold" href="panel.php">Salud Total</a>
             <div class="d-flex align-items-center text-white">
                 <small class="me-3 d-none d-md-block">
                     <?php echo htmlspecialchars($_SESSION['user_nombre']); ?>
@@ -50,6 +52,13 @@ $medicamentos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </nav>
 
     <div class="container">
+        <?php if (isset($_GET['eliminado'])): ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>¡Eliminado!</strong> El medicamento fue borrado correctamente.
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        <?php endif; ?>
+
         <div class="card shadow-sm mb-4 border-0">
             <div class="card-body">
                 <div class="row g-3">
@@ -75,8 +84,7 @@ $medicamentos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <table class="table table-hover align-middle mb-0">
                     <thead class="table-light">
                         <tr>
-                            <th class="ps-3">ID</th>
-                            <th>Medicamento</th>
+                            <th class="ps-3">Medicamento</th>
                             <th>Categoría</th>
                             <th>Proveedor</th>
                             <th class="text-center">Stock</th>
@@ -87,8 +95,7 @@ $medicamentos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <tbody>
                         <?php foreach ($medicamentos as $med): ?>
                         <tr>
-                            <td class="ps-3 text-muted"><?php echo $med['id']; ?></td>
-                            <td class="fw-bold text-primary"><?php echo htmlspecialchars($med['nombre']); ?></td>
+                            <td class="ps-3 fw-bold text-primary"><?php echo htmlspecialchars($med['nombre']); ?></td>
                             <td><span class="badge bg-light text-dark border"><?php echo htmlspecialchars($med['categoria']); ?></span></td>
                             <td class="small"><?php echo htmlspecialchars($med['proveedor'] ?? '-'); ?></td>
                             <td class="text-center">
@@ -98,8 +105,41 @@ $medicamentos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </td>
                             <td>$<?php echo number_format($med['precio'], 2); ?></td>
                             <td class="text-end pe-3">
-                                <a href="editar.php?id=<?php echo $med['id']; ?>" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i>Editar</a>
-                                <a href="../logica/eliminar.php?id=<?php echo $med['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Borrar?');"><i class="bi bi-trash">Eliminar</i></a>
+
+                                <a href="editar.php?id=<?php echo $med['id']; ?>" class="btn btn-warning btn-sm">
+                                    <i class="bi bi-pencil"></i>Editar
+                                </a>
+
+                                <button 
+                                    class="btn btn-danger btn-sm" 
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#confirmarEliminar<?= $med['id'] ?>">
+                                    <i class="bi bi-trash"></i> Eliminar
+                                </button>
+
+                                <div class="modal fade" id="confirmarEliminar<?= $med['id'] ?>" tabindex="-1">
+                                  <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                      <div class="modal-header bg-danger text-white">
+                                        <h5 class="modal-title">Confirmar eliminación</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                      </div>
+                                      <div class="modal-body">
+                                        ¿Seguro que deseas eliminar el medicamento  
+                                        <strong class="text-danger"><?= htmlspecialchars($med['nombre']); ?></strong>?
+                                        <br><small>No podrás recuperarlo después.</small>
+                                      </div>
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+
+                                        <a href="../logica/eliminar.php?id=<?= $med['id']; ?>" class="btn btn-danger">
+                                            Sí, eliminar
+                                        </a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -108,5 +148,7 @@ $medicamentos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </div>
     </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

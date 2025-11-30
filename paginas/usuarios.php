@@ -20,7 +20,18 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 </head>
 <body class="bg-light">
-
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4 shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="panel.php">Salud Total</a>
+            <div class="d-flex align-items-center text-white">
+                <small class="me-3 d-none d-md-block">
+                    <?php echo htmlspecialchars($_SESSION['user_nombre']); ?>
+                </small>
+                <a href="../logica/logout.php" class="btn btn-outline-light btn-sm">Salir</a>
+            </div>
+        </div>
+    </nav>
     <div class="container mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="text-primary fw-bold">Gestion de Usuarios</h2>

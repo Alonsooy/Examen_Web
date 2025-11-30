@@ -62,6 +62,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Editar Medicamento</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --main-success: #198754;
+            --main-success-hover: #157347;
+        }
+
+        .btn-success {
+            background-color: var(--main-success) !important;
+            border-color: var(--main-success) !important;
+            color: white !important;
+        }
+
+        .btn-success:hover {
+            background-color: var(--main-success-hover) !important;
+            border-color: var(--main-success-hover) !important;
+        }
+
+        #nombreEditar {
+            color: #ffbe0b;
+        }
+    </style>
 </head>
 <body class="bg-light d-flex align-items-center min-vh-100">
 
@@ -75,8 +97,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="card-body p-4">
                         
                         <?php echo $mensaje; ?>
-
-                        <form method="POST">
+                        <?php if (strpos($mensaje, 'Registro actualizado correctamente') !== false): ?>
+                        <script>
+                            window.location.href = "panel.php";
+                        </script>
+                        <?php endif; ?>
+                        <form method="POST" id="formEditar">
                             <div class="mb-3">
                                 <label class="form-label">Nombre</label>
                                 <input type="text" name="nombre" class="form-control" value="<?php echo htmlspecialchars($medicamento['nombre']); ?>" required>
@@ -110,7 +136,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </div>
 
                             <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-warning btn-lg">Guardar Cambios</button>
+                                <button type="submit" class="btn btn-warning btn-lg text-dark fw-bold">Guardar Cambios</button>
                                 <a href="panel.php" class="btn btn-outline-secondary">Cancelar</a>
                             </div>
                         </form>
@@ -119,19 +145,61 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
     </div>
-    <script>
-    document.querySelector('form').addEventListener('submit', function(event) {
-        var campoCantidad = document.querySelector('input[name="cantidad"]');
-        var campoPrecio = document.querySelector('input[name="precio"]');
-        if(campoCantidad && campoPrecio) {
-            var cantidad = parseFloat(campoCantidad.value);
-            var precio = parseFloat(campoPrecio.value);
-            if (cantidad < 0 || precio < 0) {
-                event.preventDefault(); 
-                alert("¡Atención! El stock y el precio no pueden ser números negativos.");
-            }
-        }
-    });
-    </script>
+
+<div class="modal fade" id="confirmEditModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header bg-warning text-dark">
+        <h5 class="modal-title fw-bold">Confirmar Cambios</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body text-center">
+        <h5 class="fw-semibold mb-3">
+            ¿Deseas guardar los cambios del medicamento?
+        </h5>
+
+        <span id="nombreEditar" class="fw-bold fs-4"></span>
+      </div>
+
+      <div class="modal-footer d-flex justify-content-between">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn btn-warning text-dark fw-bold" id="btnConfirmarEdicion">Guardar Cambios</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+const form = document.getElementById("formEditar");
+let modalConfirm = new bootstrap.Modal(document.getElementById("confirmEditModal"));
+let btnConfirmar = document.getElementById("btnConfirmarEdicion");
+
+form.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let cantidad = parseFloat(document.querySelector('input[name="cantidad"]').value);
+    let precio = parseFloat(document.querySelector('input[name="precio"]').value);
+    let nombre = document.querySelector('input[name="nombre"]').value;
+
+    if (cantidad < 0 || precio < 0) {
+        alert("¡Atención! El stock y el precio no pueden ser números negativos.");
+        return;
+    }
+
+    document.getElementById("nombreEditar").textContent = nombre;
+
+    modalConfirm.show();
+});
+
+btnConfirmar.addEventListener("click", function() {
+    form.submit();
+});
+</script>
+
 </body>
 </html>
